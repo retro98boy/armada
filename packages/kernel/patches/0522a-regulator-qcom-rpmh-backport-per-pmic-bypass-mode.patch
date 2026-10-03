@@ -1,0 +1,52 @@
+Subject: [PATCH] regulator: qcom-rpmh: backport per-PMIC bypass mode for 7.2.5
+
+Linux 7.2.5 hardcodes the PMIC4 BOB bypass value, while PMIC5 uses a
+separate value. Backport the per-PMIC field, active bypass selection and
+BOB initializers from the stable 7.2.6 driver. Armada's suspend-state
+patch also needs this field to restore the correct bypass mode.
+
+Source: https://raw.githubusercontent.com/gregkh/linux/v7.2.6/drivers/regulator/qcom-rpmh-regulator.c
+---
+--- a/drivers/regulator/qcom-rpmh-regulator.c
++++ b/drivers/regulator/qcom-rpmh-regulator.c
+@@ -111,6 +111,7 @@
+  * @hpm_min_load_uA:		Minimum load current in microamps that requires
+  *				high power mode (HPM) operation.  This is used
+  *				for LDO hardware type regulators only.
++ * @pmic_bypass_mode:		The PMIC bypass mode value.
+  * @pmic_mode_map:		Array indexed by regulator framework mode
+  *				containing PMIC hardware modes.  Must be large
+  *				enough to index all framework modes supported
+@@ -125,6 +126,7 @@
+ 	int					n_linear_ranges;
+ 	int					n_voltages;
+ 	int					hpm_min_load_uA;
++	int					pmic_bypass_mode;
+ 	const int				*pmic_mode_map;
+ 	unsigned int			      (*of_map_mode)(unsigned int mode);
+ };
+@@ -311,7 +313,7 @@
+ 		return pmic_mode;
+ 
+ 	if (bypassed)
+-		cmd.data = PMIC4_BOB_MODE_PASS;
++		cmd.data = vreg->hw_data->pmic_bypass_mode;
+ 	else
+ 		cmd.data = pmic_mode;
+ 
+@@ -767,6 +769,7 @@
+ 	},
+ 	.n_linear_ranges = 1,
+ 	.n_voltages = 84,
++	.pmic_bypass_mode = PMIC4_BOB_MODE_PASS,
+ 	.pmic_mode_map = pmic_mode_map_pmic4_bob,
+ 	.of_map_mode = rpmh_regulator_pmic4_bob_of_map_mode,
+ };
+@@ -975,6 +978,7 @@
+ 	},
+ 	.n_linear_ranges = 1,
+ 	.n_voltages = 32,
++	.pmic_bypass_mode = PMIC5_BOB_MODE_PASS,
+ 	.pmic_mode_map = pmic_mode_map_pmic5_bob,
+ 	.of_map_mode = rpmh_regulator_pmic4_bob_of_map_mode,
+ };

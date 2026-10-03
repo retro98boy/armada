@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+"""Keep the Lenovo Y700 Gen4 UEFI GRUB menu pointed at the next OSTree deployment."""
+
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+boot = Path(os.environ.get("BOOTROOT", "/boot"))
+esp = Path(os.environ.get("ESP", "/boot/efi"))
+if not (esp / ".armada-lenovo-y700-gen4-uefi").is_file():
+    sys.exit(0)
+
+uuid = os.environ.get("BOOT_UUID")
+uuid_from_env = bool(uuid)
+if not uuid:
+    mounted_at = subprocess.check_output(
+        ["findmnt", "-n", "-o", "TARGET", "--target", str(boot)], text=True
+    ).strip()
+    if Path(mounted_at) != boot:
+        raise SystemExit(f"{boot} is not a mountpoint")
+    device = subprocess.check_output(
+        ["findmnt", "-n", "-o", "SOURCE", "--target", str(boot)], text=True
+    ).strip()
+    uuid = subprocess.check_output(
+        ["blkid", "-s", "UUID", "-o", "value", device], text=True
+    ).strip()
+if not re.fullmatch(r"[0-9a-fA-F-]+", uuid):
+    raise SystemExit(f"invalid /boot filesystem UUID: {uuid!r}")
+
+entries = list((boot / "loader/entries").glob("*.conf"))
+if not entries:
+    raise SystemExit("no OSTree BLS entries in /boot/loader/entries")
+
+def fields(path):
+    return dict(line.split(None, 1) for line in path.read_text().splitlines()
+                if line.strip() and not line.startswith("#") and len(line.split(None, 1)) == 2)
+
+def version_key(path):
+    return tuple(int(x) for x in re.findall(r"\d+", fields(path).get("version", "0")))
+
+entry = max(entries, key=version_key)
+bls = fields(entry)
+for key in ("linux", "initrd", "options"):
+    if key not in bls:
+        raise SystemExit(f"{entry} has no {key}")
+
+def path_on_boot(value):
+    if (not re.fullmatch(r"/boot/[A-Za-z0-9_./+-]+", value) or
+            ".." in Path(value).parts):
+        raise SystemExit(f"unexpected BLS path: {value}")
+    path = "/" + value.removeprefix("/boot/")
+    if not (boot / path.lstrip("/")).is_file():
+        raise SystemExit(f"missing boot file: {path}")
+    return path
+
+linux = path_on_boot(bls["linux"])
+initrd = path_on_boot(bls["initrd"])
+dtb = path_on_boot(bls.get("fdtdir", str(Path(bls["linux"]).parent / "dtb"))
+                   + "/qcom/sm8750-lenovo-elden.dtb")
+options = bls["options"]
+ostree_arg = next((arg.removeprefix("ostree=") for arg in options.split()
+                   if arg.startswith("ostree=")), None)
+if not ostree_arg:
+    raise SystemExit(f"{entry} has no ostree= argument")
+if not re.fullmatch(r"[A-Za-z0-9_./:=,+@% -]+", options):
+    raise SystemExit(f"unsafe BLS options in {entry}")
+# bootc's BLS may provide subvol=/root while the device adds compression.
+# The kernel uses the last rootflags= value, so keep both in one argument.
+args = options.split()
+rootflags = [arg.partition("=")[2] for arg in args if arg.startswith("rootflags=")]
+if len(rootflags) > 1:
+    flags = list(dict.fromkeys(flag for value in rootflags for flag in value.split(",") if flag))
+    first = next(i for i, arg in enumerate(args) if arg.startswith("rootflags="))
+    args[first] = "rootflags=" + ",".join(flags)
+    args = [arg for i, arg in enumerate(args)
+            if i == first or not arg.startswith("rootflags=")]
+    options = " ".join(args)
+
+if not uuid_from_env and (not ostree_arg.startswith("/ostree/") or
+                          ".." in Path(ostree_arg).parts or
+                          not (Path(os.environ.get("SYSROOT", "/")) /
+                               ostree_arg.lstrip("/")).exists()):
+    raise SystemExit(f"{entry} points to a missing OSTree deployment")
+
+config = ("set default=0\nset timeout=3\n"
+          "menuentry 'Armada - Lenovo Y700 Gen4' {\n"
+          f"    search --no-floppy --fs-uuid --set=root {uuid}\n"
+          f"    linux {linux} {options} video=efifb:off efi=noruntime clk_ignore_unused pd_ignore_unused\n"
+          f"    initrd {initrd}\n"
+          f"    devicetree {dtb}\n"
+          "}\n")
+target = boot / "grub2/grub.cfg"
+target.parent.mkdir(parents=True, exist_ok=True)
+temp = target.with_name(".grub.cfg.new")
+temp.write_text(config)
+os.replace(temp, target)
+print(f"armada-uefi-grub-sync: {entry.name} -> {target}")

@@ -1,0 +1,28 @@
+From: Armada
+Subject: [PATCH] wlserver: rotate Lenovo Legion Y700 Gen4 touch with the internal display
+
+The Lenovo Legion Y700 Gen4 touchscreen is exposed as NVTCapacitiveTouchScreen
+over SPI. Gamescope associates internal touchscreens through I2C and external
+touchscreens through USB, so this device is left without a connector and skips
+the existing application-layer touch orientation transform. Associate this
+board's SPI touchscreen with the internal display so touch coordinates use the
+same orientation as the rotated display.
+
+---
+diff --git a/src/wlserver.cpp b/src/wlserver.cpp
+index c2fa2cb..fd4555b 100644
+--- a/src/wlserver.cpp
++++ b/src/wlserver.cpp
+@@ -492,8 +492,11 @@ static void wlserver_touch_associate_connector(struct wlserver_touch *touch)
+ 	gamescope::IBackendConnector* connector = nullptr;
+ 	struct libinput_device *lidev = wlr_libinput_get_device_handle(&touch->wlr->base);
+ 	struct udev_device *dev = libinput_device_get_udev_device(lidev);
++	const char *name = libinput_device_get_name(lidev);
++	if (name && strcmp(name, "NVTCapacitiveTouchScreen") == 0)
++		connector = GetBackend()->GetConnector(gamescope::GAMESCOPE_SCREEN_TYPE_INTERNAL);
+ 	auto *parent = dev;
+-	while (parent) {
++	while (parent && connector == nullptr) {
+ 		const char *subsystem = udev_device_get_subsystem(parent);
+ 		if (subsystem) {
+ 			if (strcmp( subsystem, "i2c" ) == 0) {

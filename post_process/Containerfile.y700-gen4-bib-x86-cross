@@ -1,0 +1,11 @@
+ARG BIB_IMAGE=quay.io/centos-bootc/bootc-image-builder:latest
+FROM ${BIB_IMAGE}
+
+# BIB runs natively on x86 and uses this static emulator for the ARM64 input.
+RUN dnf5 -y install qemu-user-static-aarch64 && dnf5 clean all
+
+# Keep the nested Podman lock table local to the BIB container. Shared-memory
+# locks fail while BIB inspects an ARM64 bootc image on an x86_64 host.
+RUN mkdir -p /etc/containers/containers.conf.d && \
+    printf '[engine]\nlock_type = "file"\n' \
+        > /etc/containers/containers.conf.d/99-armada-y700-gen4.conf

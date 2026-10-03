@@ -343,6 +343,9 @@ no equivalent submission was found, or a permanent URL to the upstream submissio
 - `patches/0522-PCI-host-common-let-only-endpoints-veto-d3cold.patch`
   source: armada
   upstream: local
+- `patches/0522a-regulator-qcom-rpmh-backport-per-pmic-bypass-mode.patch`
+  source: Linux stable 7.2.6 `drivers/regulator/qcom-rpmh-regulator.c`
+  notes: Backports the per-PMIC bypass field and BOB initializers to 7.2.5. PMIC4 uses 0, PMIC5 uses 2; this preserves patch 0523's correct suspend/resume bypass selection without depending on the newer kernel base.
 - `patches/0523-regulator-qcom-rpmh-add-suspend-state-support.patch`
   source: https://github.com/thorch-os/thorch/blob/82e7472e6cad5c08a55c3aef92ef5be218621b2c/packages/linux-thorch/patches/0218-regulator-qcom-rpmh-add-suspend-state-support.patch
   upstream: unknown
@@ -722,6 +725,9 @@ no equivalent submission was found, or a permanent URL to the upstream submissio
   source: https://github.com/ROCKNIX/distribution/blob/bcf3b5bc574990b96543484575b06f912153a715/projects/ROCKNIX/devices/SM8250/linux/dts/qcom/sm8250-retroidpocket-rpminiv2.dts
 - `dts/sm8750-konkr-pf-elite.dts`
   source: https://github.com/ROCKNIX/distribution/blob/bcf3b5bc574990b96543484575b06f912153a715/projects/ROCKNIX/devices/SM8750/linux/dts/qcom/sm8750-konkr-pf-elite.dts
+- `dts/sm8750-lenovo-elden.dts`
+  source: local Batocera `lenovo-y700-gen4` commit `0a5389ebc7`, `board/batocera/qualcomm/sm8750/dts/qcom/sm8750-lenovo-elden.dts`
+  notes: Lenovo Legion Y700 Gen4 board tree; this Lenovo Y700 Gen4 branch builds it with Linux 7.2.5 and selects it through GRUB EFI.
 - `dts/sm8750-konkr-pf-elite.dts.patch`
   source: armada
   notes: Armada adapts the Elite touchscreen node to the full ROCKNIX Chipone fork shared with the SM8650 Pocket FIT, keeps volume-up from waking the system, and adds the DisplayPort playback link required for USB-C DP Alt Mode audio; the touchscreen driver is selected only by those two device-tree nodes. Armada also marks PCIe WAKE# active-low and idles the codec rails in LPM during s2idle.
@@ -790,3 +796,23 @@ no equivalent submission was found, or a permanent URL to the upstream submissio
 - `patches/0505a-arm64-unaligned-atomics-cover-the-load128-store-exclusive.patch`
   source: armada
   upstream: local
+
+### Lenovo Y700 Gen4 (Elden)
+
+These patches come from local Batocera branch `lenovo-y700-gen4`, commit
+`0a5389ebc7`, under `board/batocera/qualcomm/sm8750/linux_patches/`.
+Patch 1403 uses the Linux 7.2.5 context in `dsi_pll_enable_pll_bias`.
+Armada limits the display reset to `lenovo,elden`; the SDHCI quirk is already
+limited to that compatible.
+
+- `patches/1400-drm-panel-backport-Novatek-NT36536-panel-driver-from.patch`
+- `patches/1401-drm-panel-novatek-nt36536-configure-CSOT-DSC-slice-l.patch`
+- `patches/1402-drm-msm-dpu-align-RGB-DSC-video-width-with-DSI-timin.patch`
+- `patches/1403-drm-msm-dsi-phy-power-up-the-digital-top-before-star.patch`
+- `patches/1404-drm-msm-dsi-phy-select-C-PHY-pixel-clock-parent-by-r.patch`
+- `patches/1405-drm-msm-dsi-select-DSC-RC-table-and-preserve-panel-f.patch`
+- `patches/1406-drm-msm-dsi-support-DSC-configurations-with-slice_pe.patch`
+- `patches/1407-clk-qcom-dispcc-sm8750-reset-live-display.patch`
+- `patches/1410-input-touchscreen-add-Novatek-NT36536-SPI-host-downl.patch`
+- `patches/1420-ASoC-codecs-add-AW88461-speaker-amplifier-support.patch`
+- `patches/1430-mmc-sdhci-msm-force-PIO-on-lenovo-elden-for-reset-is.patch`

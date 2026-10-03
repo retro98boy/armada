@@ -90,6 +90,7 @@ CONFIG_PHY_QCOM_QMP=y
 CONFIG_PHY_QCOM_QMP_COMBO=y
 CONFIG_PHY_QCOM_EUSB2_REPEATER=y
 CONFIG_PHY_SNPS_EUSB2=y
+CONFIG_PHY_NXP_PTN3222=y              # Lenovo Y700 Gen4 USB2 repeater
 CONFIG_REGULATOR_QCOM_REFGEN=y
 
 CONFIG_TYPEC=y
@@ -109,6 +110,7 @@ CONFIG_BACKLIGHT_PWM=y
 CONFIG_BACKLIGHT_QCOM_WLED=y
 
 # ============== Display panels ==============
+CONFIG_DRM_PANEL_NOVATEK_NT36536=y      # Lenovo Y700 Gen4 bonded DSI panel
 CONFIG_DRM_PANEL_AR06_4INCH=y               # AYANEO Pocket ACE
 CONFIG_DRM_PANEL_AR02_3INCH=y               # AYANEO Pocket DMG
 CONFIG_DRM_PANEL_SITRONIX_ST7703=y          # AYANEO Pocket DS lower panel
@@ -131,6 +133,7 @@ CONFIG_INPUT_KONKR_SYSBTN=y               # KONKR Pocket FIT Elite system button
 CONFIG_JOYSTICK_MANGMI_POCKET_MAX=m       # MANGMI Pocket Max + Air Y Pro
 
 # ============== Touchscreens ==============
+CONFIG_TOUCHSCREEN_NT36536_SPI=m        # Lenovo Y700 Gen4
 CONFIG_TOUCHSCREEN_HYNITRON_CSTXXX=m
 CONFIG_TOUCHSCREEN_HYNITRON_ALL=m
 CONFIG_TOUCHSCREEN_HYNITRON_CST66XX=y     # MANGMI Air Y Pro
@@ -182,6 +185,7 @@ CONFIG_JOYSTICK_XPAD_FF=y
 CONFIG_JOYSTICK_XPAD_LEDS=y
 
 # ============== Audio ==============
+CONFIG_SND_SOC_AW88461=m               # Lenovo Y700 Gen4 stereo speakers
 CONFIG_SND_SOC_AW88166=m
 CONFIG_SND_SOC_AW88261=m               # KONKR Pocket FIT Elite speaker amp
 # absent snd-seq spams udev at boot — Fedora's snd-pcm modprobe rule pulls it in

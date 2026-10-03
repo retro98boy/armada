@@ -1,4 +1,6 @@
+From 99a4d4a8fb3d47dba41b2abc80dc5293107f8349 Mon Sep 17 00:00:00 2001
 From: virtudude <virtudude@protonmail.com>
+Date: Fri, 9 Oct 2026 23:04:42 +0800
 Subject: [PATCH] drm/msm/dsi/phy: initialize PLL bias when enabling the PHY
 
 PHY enable establishes a PLL bias reference and sets the power bits, but
@@ -15,15 +17,22 @@ Fixes: cb55f39bf7b1 ("drm/msm/dsi/phy: Fix reading zero as PLL rates when unprep
 Link: https://git.kernel.org/torvalds/c/cb55f39bf7b1e687b88dc9825c21a7d3454b5acb
 Link: https://www.mail-archive.com/dri-devel@lists.freedesktop.org/msg638716.html
 ---
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+index 984a66085dfb..6241fa83009b 100644
 --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
 +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-@@ -1096,7 +1096,9 @@
+@@ -1088,6 +1088,8 @@ static int dsi_7nm_phy_enable(struct msm_dsi_phy *phy,
  	data = DSI_7nm_PHY_CMN_CTRL_0_DIGTOP_PWRDN_B |
  	       DSI_7nm_PHY_CMN_CTRL_0_PLL_SHUTDOWNB;
  	writel(data, base + REG_DSI_7nm_PHY_CMN_CTRL_0);
 +	writel(0xc0, phy->pll_base + REG_DSI_7nm_PHY_PLL_SYSTEM_MUXES);
- 	spin_unlock_irqrestore(&pll->pll_enable_lock, flags);
 +	ndelay(250);
  
  	/* Assert PLL core reset */
  	writel(0x00, base + REG_DSI_7nm_PHY_CMN_PLL_CNTRL);
+-- 
+2.56.0
+

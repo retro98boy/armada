@@ -35,6 +35,15 @@
 0106-drm-panel-il97680a-luminance-linear-backlight-scale.patch
 0064_Mangmi-Air-Y-Pro-panel.patch
 
+1400-drm-panel-backport-Novatek-NT36536-panel-driver-from.patch
+1401-drm-panel-novatek-nt36536-configure-CSOT-DSC-slice-l.patch
+1402-drm-msm-dpu-align-RGB-DSC-video-width-with-DSI-timin.patch
+1403-drm-msm-dsi-phy-power-up-the-digital-top-before-star.patch
+1404-drm-msm-dsi-phy-select-C-PHY-pixel-clock-parent-by-r.patch
+1405-drm-msm-dsi-select-DSC-RC-table-and-preserve-panel-f.patch
+1406-drm-msm-dsi-support-DSC-configurations-with-slice_pe.patch
+1407-clk-qcom-dispcc-sm8750-reset-live-display.patch
+
 # ============== Panel power + backlight ==============
 0058_AYN-Odin2-Mini--backlight.patch
 0060-backlight-Add-SY7758-LED-driver.patch
@@ -89,6 +98,7 @@
 0515-input-rsinput-reassemble-uart-frames-instead-of-dropping-them.patch
 
 # ============== Audio ==============
+1420-ASoC-codecs-add-AW88461-speaker-amplifier-support.patch
 0059-ASoC-aw88395-lib-skip-monitor-sections-in-V1-ACF-parse.patch
 0063-ASoC-wcd939x-route-usbss-on-integrated-jack-insert.patch
 0064-ASoC-wcd-mbhc-clear-stale-jack-report-on-mechanical-removal.patch
@@ -105,6 +115,7 @@
 0054_sn3112-pwm-driver.patch
 
 # ============== SoC / Platform ==============
+1430-mmc-sdhci-msm-force-PIO-on-lenovo-elden-for-reset-is.patch
 20260424_neil_armstrong_arm64_dts_qcom_sm8_456_50_add_missing_cx_power_domain_to_gcc.patch
 v9_20260729_qualcomm_crypto_qce_runtime_pm_interconnect.patch
 0504-mailbox-qcom-ipcc-mask-summary-irq-for-suspend-to-ram.patch
@@ -118,6 +129,7 @@ v9_20260729_qualcomm_crypto_qce_runtime_pm_interconnect.patch
 0512-PCI-qcom-skip-L23-ready-poll-on-SM8550.patch
 0513-PCI-qcom-honour-an-opp-suspend-opp-as-the-non-s2ram-memory-floor.patch
 0522-PCI-host-common-let-only-endpoints-veto-d3cold.patch
+0522a-regulator-qcom-rpmh-backport-per-pmic-bypass-mode.patch
 0523-regulator-qcom-rpmh-add-suspend-state-support.patch
 0524-regulator-core-apply-mem-state-for-s2idle.patch
 0525-regulator-core-log-missing-suspend-configuration-at-debug.patch
@@ -159,6 +171,7 @@ v9_20260729_qualcomm_crypto_qce_runtime_pm_interconnect.patch
 v2_20260420_neil_armstrong_arm64_qcom_sm8650_misc_enhancements.patch
 0063-gpu-drm-panel-add-pocket-fit-panel.patch
 0064-input-touchscreen-add-rocknix-chipone-tddi.patch
+1410-input-touchscreen-add-Novatek-NT36536-SPI-host-downl.patch
 
 # ============== SM8250 handhelds ==============
 0067-arm64-dts-qcom-pm8150l-add-lcdb-node.patch

@@ -56,3 +56,5 @@ to a commit, or `armada` if it's original; a URL source with no `notes` is verba
   source: armada
 - `patches/0027-steamcompmgr-elapsed-time-fps-limiter.patch`
   source: armada
+- `patches/0028-wlserver-associate-y700-spi-touchscreen-with-internal-output.patch`
+  source: armada; associate the Lenovo Y700 Gen4 SPI touchscreen with the internal display so it receives the display orientation transform.
