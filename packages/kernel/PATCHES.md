@@ -102,11 +102,11 @@ no equivalent submission was found, or a permanent URL to the upstream submissio
 - `patches/0107-drm-msm-dpu-AVR-variable-refresh-on-DSI-video-mode.patch`
   source: https://github.com/portare-ch/portareos/blob/67ed458421d919aba9c687c3f72d7678954b6902/projects/PortareOS/devices/SM8550/patches/linux/1097-drm-msm-dpu-AVR-variable-refresh-on-DSI-video-mode.patch
   upstream: unknown
-  notes: Rebased onto Armada’s Linux 7.2.6 display stack and panel driver, retaining its 60/120 Hz modes and luminance-linear backlight; the range is 80–120 Hz, following PortareOS #601.
+  notes: Rebased onto Armada’s Linux 7.2.6 display stack and panel driver, retaining its 60/120 Hz modes and luminance-linear backlight; the range is 80–120 Hz, following PortareOS #601. Lenovo Y700 Gen4 bypasses AVR setup and VRR property attachment.
 - `patches/0108-drm-msm-dpu-send-the-flip-event-after-the-vblank-irq.patch`
   source: https://github.com/portare-ch/portareos/blob/be06100b6d127692ed99401d23980fc04888ae01/projects/PortareOS/devices/SM8550/patches/linux/1098-drm-msm-dpu-send-the-flip-event-after-the-vblank-irq.patch
   upstream: unknown
-  notes: Companion flip-event ordering fix for AVR; refreshed offsets for Armada and added the source link to the patch header.
+  notes: Companion flip-event ordering fix for AVR; refreshed offsets for Armada and added the source link to the patch header. Lenovo Y700 Gen4 retains the original flush-register-only wait.
 - `patches/0062-gpu-drm-panel-add-wt0630-panel.patch`
   source: https://github.com/ROCKNIX/distribution/blob/bcf3b5bc574990b96543484575b06f912153a715/projects/ROCKNIX/devices/SM8550/patches/linux/0062-gpu-drm-panel-add-wt0630-panel.patch
   upstream: https://lore.kernel.org/r/20260625-topic-sm8650-ayaneo-pocket-s2-r63419-v8-2-8570e692143e@linaro.org
@@ -761,6 +761,9 @@ no equivalent submission was found, or a permanent URL to the upstream submissio
   source: https://github.com/ROCKNIX/distribution/blob/bcf3b5bc574990b96543484575b06f912153a715/projects/ROCKNIX/devices/SM8250/linux/dts/qcom/sm8250-retroidpocket-rpminiv2.dts
 - `dts/sm8750-konkr-pf-elite.dts`
   source: https://github.com/ROCKNIX/distribution/blob/bcf3b5bc574990b96543484575b06f912153a715/projects/ROCKNIX/devices/SM8750/linux/dts/qcom/sm8750-konkr-pf-elite.dts
+- `dts/sm8750-lenovo-elden.dts`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/dt/sm8750-lenovo-elden.dts
+  notes: Lenovo Legion Y700 Gen4 board tree; Armada carries it on its Linux 7.2.6 kernel baseline and selects it through GRUB EFI.
 - `dts/sm8750-konkr-pf-elite.dts.patch`
   source: armada
   notes: Armada adapts the Elite touchscreen node to the full ROCKNIX Chipone fork shared with the SM8650 Pocket FIT, keeps volume-up from waking the system, and adds the DisplayPort playback link required for USB-C DP Alt Mode audio; the touchscreen driver is selected only by those two device-tree nodes. Armada also marks PCIe WAKE# active-low and idles the codec rails in LPM during s2idle.
@@ -845,3 +848,70 @@ no equivalent submission was found, or a permanent URL to the upstream submissio
   source: armada
   upstream: local
   notes: Uses single-channel associated scans with TX draining and home-channel rest. Tested on KONKR Pocket FIT Elite.
+
+### Lenovo Y700 Gen4
+
+- `patches/0077-drm-mipi-dsi-add-flag-for-sending-all-DSC-slices-in-.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/0077-drm-mipi-dsi-add-flag-for-sending-all-DSC-slices-in-.patch
+  upstream: unknown
+- `patches/0078-drm-msm-dsi-support-DSC-configurations-with-slice_pe.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/0078-drm-msm-dsi-support-DSC-configurations-with-slice_pe.patch
+  upstream: unknown
+- `patches/0079-drm-msm-dsi-setup-RC-model-properly.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/0079-drm-msm-dsi-setup-RC-model-properly.patch
+  upstream: unknown
+- `patches/0080-drm-msm-dsi-preserve-panel-specified-DSC-first-line-.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/0080-drm-msm-dsi-preserve-panel-specified-DSC-first-line-.patch
+  upstream: unknown
+- `patches/0081-drm-msm-dpu-round-up-the-compressed-INTF-width.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/0081-drm-msm-dpu-round-up-the-compressed-INTF-width.patch
+  upstream: unknown
+- `patches/0082-drm-msm-dsi-phy-power-up-the-digital-top-before-star.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/0082-drm-msm-dsi-phy-power-up-the-digital-top-before-star.patch
+  upstream: unknown
+  notes: Refreshed the PLL-enable hunk context for Linux 7.2.6; the register changes are unchanged.
+- `patches/0083-drm-msm-dsi-phy-select-C-PHY-pixel-clock-parent-by-r.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/0083-drm-msm-dsi-phy-select-C-PHY-pixel-clock-parent-by-r.patch
+  upstream: unknown
+- `patches/0085-mmc-sdhci-msm-force-PIO-on-lenovo-elden-for-reset-is.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/0085-mmc-sdhci-msm-force-PIO-on-lenovo-elden-for-reset-is.patch
+  upstream: unknown
+- `patches/general-ASoC-codecs-add-AW88461-speaker-amplifier-support.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/general-ASoC-codecs-add-AW88461-speaker-amplifier-support.patch
+  upstream: unknown
+- `patches/general-Input-touchscreen-add-Novatek-NT36536-SPI-host-downl.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/general-Input-touchscreen-add-Novatek-NT36536-SPI-host-downl.patch
+  upstream: unknown
+  notes: Adjusted the Kconfig insertion to follow the Synaptics DSX source line and apply after the ChipOne TDDI patch. The driver implementation is unchanged.
+- `patches/general-drm-panel-copy-Novatek-NT36536-panel-driver-from-v7..patch`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/general-drm-panel-copy-Novatek-NT36536-panel-driver-from-v7..patch
+  upstream: unknown
+- `patches/general-drm-panel-novatek-nt36536-set-CSOT-DSC-first-line-BP.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/42d9b59058b4ced55c1af1397d73d5a71dddc4ca/patch/kernel/archive/sm8750-7.2/general-drm-panel-novatek-nt36536-set-CSOT-DSC-first-line-BP.patch
+  upstream: unknown
+- `patches/general-drm-panel-novatek-nt36536-limit-lenovo-elden-to-120hz.patch`
+  source: https://github.com/retro98boy/batocera.linux/blob/9c9b4aa7740bef74e44a8cb863be80703c5eea5f/board/batocera/qualcomm/sm8750/linux_patches/general-drm-panel-novatek-nt36536-limit-lenovo-elden-to-120hz.patch
+  upstream: unknown
+  notes: Advertise only the 120 Hz mode on Lenovo Y700 Gen4 (`lenovo,elden`); retain all modes on other devices.
+- `patches/1407-clk-qcom-dispcc-sm8750-reset-live-display.patch`
+  source: https://github.com/retro98boy/batocera.linux/blob/0a5389ebc7cd896ed9c15a0b68abbef08da08564/board/batocera/qualcomm/sm8750/linux_patches/0700-armbian-dispcc-sm8750-knockdown-block-resets-on-probe.patch
+  upstream: unknown
+  notes: Armada restricts the display-block reset to `lenovo,elden`; other SM8750 boards retain their existing probe behavior.
+
+- `patches/0702-clk-qcom-preserve-mdss-hw-control-on-lenovo-y700-gen4.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/5f2e6e961b0c465f24172064c40850c18ced5e05/patch/kernel/archive/sm8750-7.2/0702-clk-qcom-preserve-mdss-hw-control-on-lenovo-y700-gen4.patch
+  upstream: unknown
+
+- `patches/0703-drm-msm-dpu-skip-slave-timing-enable-on-lenovo-y700-gen4.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/5f2e6e961b0c465f24172064c40850c18ced5e05/patch/kernel/archive/sm8750-7.2/0703-drm-msm-dpu-skip-slave-timing-enable-on-lenovo-y700-gen4.patch
+  upstream: unknown
+  notes: Omit the linux/of.h include already added by patch 0107.
+
+- `patches/0704-power-supply-qcom-battmgr-support-inverted-battery-current.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/5f2e6e961b0c465f24172064c40850c18ced5e05/patch/kernel/archive/sm8750-7.2/0704-power-supply-qcom-battmgr-support-inverted-battery-current.patch
+  upstream: unknown
+
+- `patches/0705-power-supply-qcom-battmgr-hide-sm8750-maximum-load-power.patch`
+  source: https://github.com/retro98boy/armbian-build/blob/5f2e6e961b0c465f24172064c40850c18ced5e05/patch/kernel/archive/sm8750-7.2/0705-power-supply-qcom-battmgr-hide-sm8750-maximum-load-power.patch
+  upstream: unknown
+  notes: Adapt to existing charge-current properties and charge-unit initialization; preserve both features.

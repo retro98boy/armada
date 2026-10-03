@@ -8,6 +8,13 @@
 0048-drm-msm-dsi-reparent-byte-pixel-src-to-xo-on-disable.patch
 0048a-drm-msm-dsi-round-byte-clock-rate-after-reparenting-to-PLL.patch
 0048b-drm-msm-dsi-fix-pll-init-in-bonded-mode.patch
+0077-drm-mipi-dsi-add-flag-for-sending-all-DSC-slices-in-.patch
+0078-drm-msm-dsi-support-DSC-configurations-with-slice_pe.patch
+0079-drm-msm-dsi-setup-RC-model-properly.patch
+0080-drm-msm-dsi-preserve-panel-specified-DSC-first-line-.patch
+0081-drm-msm-dpu-round-up-the-compressed-INTF-width.patch
+0082-drm-msm-dsi-phy-power-up-the-digital-top-before-star.patch
+0083-drm-msm-dsi-phy-select-C-PHY-pixel-clock-parent-by-r.patch
 0049-drm-msm-dpu-panel-opt-in-8bpc-dither.patch
 0066-drm-msm-dpu-enable-inline-rotation.patch
 0068-drm-msm-dpu-lutdma-dspp-igc-gamut.patch
@@ -36,6 +43,10 @@
 0107-drm-msm-dpu-AVR-variable-refresh-on-DSI-video-mode.patch
 0108-drm-msm-dpu-send-the-flip-event-after-the-vblank-irq.patch
 0064_Mangmi-Air-Y-Pro-panel.patch
+general-drm-panel-copy-Novatek-NT36536-panel-driver-from-v7..patch
+general-drm-panel-novatek-nt36536-set-CSOT-DSC-first-line-BP.patch
+general-drm-panel-novatek-nt36536-limit-lenovo-elden-to-120hz.patch
+1407-clk-qcom-dispcc-sm8750-reset-live-display.patch
 
 # ============== Panel power + backlight ==============
 0058_AYN-Odin2-Mini--backlight.patch
@@ -92,6 +103,7 @@
 0515-input-rsinput-reassemble-uart-frames-instead-of-dropping-them.patch
 
 # ============== Audio ==============
+general-ASoC-codecs-add-AW88461-speaker-amplifier-support.patch
 0059-ASoC-aw88395-lib-skip-monitor-sections-in-V1-ACF-parse.patch
 0063-ASoC-wcd939x-route-usbss-on-integrated-jack-insert.patch
 0064-ASoC-wcd-mbhc-clear-stale-jack-report-on-mechanical-removal.patch
@@ -112,6 +124,7 @@
 0054c-pwm-sn3112-power-down-across-system-suspend.patch
 
 # ============== SoC / Platform ==============
+0085-mmc-sdhci-msm-force-PIO-on-lenovo-elden-for-reset-is.patch
 20260424_neil_armstrong_arm64_dts_qcom_sm8_456_50_add_missing_cx_power_domain_to_gcc.patch
 v9_20260729_qualcomm_crypto_qce_runtime_pm_interconnect.patch
 0504-mailbox-qcom-ipcc-mask-summary-irq-for-suspend-to-ram.patch
@@ -171,6 +184,10 @@ v9_20260729_qualcomm_crypto_qce_runtime_pm_interconnect.patch
 v2_20260420_neil_armstrong_arm64_qcom_sm8650_misc_enhancements.patch
 0063-gpu-drm-panel-add-pocket-fit-panel.patch
 0064-input-touchscreen-add-rocknix-chipone-tddi.patch
+
+# ============== Lenovo Y700 Gen4 touchscreen ==============
+# Apply after ChipOne TDDI, which edits the same Kconfig insertion point.
+general-Input-touchscreen-add-Novatek-NT36536-SPI-host-downl.patch
 
 # ============== SM8250 handhelds ==============
 0067-arm64-dts-qcom-pm8150l-add-lcdb-node.patch
@@ -236,3 +253,7 @@ v2_20260420_neil_armstrong_arm64_qcom_sm8650_misc_enhancements.patch
 1021-wifi-ath12k-fix-single-pdev-frequency-ranges.patch
 1022-wifi-ath12k-split-WCN7860-scans-by-firmware-ranges.patch
 1023-wifi-ath12k-protect-TX-during-associated-range-scans.patch
+0702-clk-qcom-preserve-mdss-hw-control-on-lenovo-y700-gen4.patch
+0703-drm-msm-dpu-skip-slave-timing-enable-on-lenovo-y700-gen4.patch
+0704-power-supply-qcom-battmgr-support-inverted-battery-current.patch
+0705-power-supply-qcom-battmgr-hide-sm8750-maximum-load-power.patch

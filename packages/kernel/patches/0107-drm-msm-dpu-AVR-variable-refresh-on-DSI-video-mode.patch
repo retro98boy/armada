@@ -93,7 +93,11 @@ Source: https://github.com/portare-ch/portareos/blob/67ed458421d919aba9c687c3f72
  static inline int dpu_encoder_phys_inc_pending(struct dpu_encoder_phys *phys)
 --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
 +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-@@ -254,6 +254,74 @@
+@@ -15,2 +15,3 @@
++#include <linux/of.h>
+ #include <drm/display/drm_dsc_helper.h>
+ #include <drm/drm_managed.h>
+@@ -254,6 +254,77 @@
  	spin_unlock_irqrestore(phys_enc->enc_spinlock, lock_flags);
  }
  
@@ -115,6 +119,9 @@ Source: https://github.com/portare-ch/portareos/blob/67ed458421d919aba9c687c3f72
 +
 +	phys_enc->avr_capable = false;
 +	phys_enc->avr_enabled = false;
++	/* Preserve the fixed-refresh path on Lenovo Y700 Gen4. */
++	if (of_machine_is_compatible("lenovo,elden"))
++		return;
 +	if (!intf->ops.setup_avr || !intf->ops.enable_avr ||
 +	    !intf->ops.avr_trigger)
 +		return;
@@ -337,7 +344,10 @@ Source: https://github.com/portare-ch/portareos/blob/67ed458421d919aba9c687c3f72
  {
 --- a/drivers/gpu/drm/msm/dsi/dsi_manager.c
 +++ b/drivers/gpu/drm/msm/dsi/dsi_manager.c
-@@ -485,6 +485,13 @@
+@@ -6,1 +6,2 @@
++#include <linux/of.h>
+ #include "drm/drm_bridge_connector.h"
+@@ -485,6 +485,14 @@
  		return PTR_ERR(connector);
  	}
  
@@ -346,7 +356,8 @@ Source: https://github.com/portare-ch/portareos/blob/67ed458421d919aba9c687c3f72
 +	 * sets it. The DPU then runs the INTF's AVR while the CRTC's
 +	 * VRR_ENABLED is set.
 +	 */
-+	drm_connector_attach_vrr_capable_property(connector);
++	if (!of_machine_is_compatible("lenovo,elden"))
++		drm_connector_attach_vrr_capable_property(connector);
 +
  	return 0;
  }

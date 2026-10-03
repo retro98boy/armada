@@ -1,0 +1,4 @@
+# Lenovo Y700 Gen4: DPU output LUTs cause black scanout.
+if [[ "${ARMADA_DEVICE_ID:-}" == lenovo-y700-gen4 ]]; then
+    export gamescope_drm_output_luts=false
+fi

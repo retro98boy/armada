@@ -58,3 +58,6 @@ to a commit, or `armada` if it's original; a URL source with no `notes` is verba
   source: armada
 - `patches/0028-improve-frame-pacing.patch`
   source: https://github.com/ValveSoftware/gamescope/pull/2417
+- `patches/0028-wlserver-associate-y700-spi-touchscreen-with-internal-output.patch`
+  source: armada
+  notes: Associates the Lenovo Y700 Gen4 SPI touchscreen with the internal display so it receives the display orientation transform.

@@ -28,6 +28,7 @@ case "$model" in
     "KONKR Pocket FIT") profile=konkr-pocket-fit ;;
     "KONKR Pocket FIT Elite") profile=konkr-pocket-fit-elite ;;
     "AYN Odin 3") profile=ayn-odin-3 ;;
+    "Lenovo Legion Y700 Gen4") profile=lenovo-y700-gen4 ;;
     "Retroid Pocket 5") profile=retroid-pocket-5 ;;
     "Retroid Pocket 5 Visionox") profile=retroid-pocket-5-visionox ;;
     "Retroid Pocket Flip2") profile=retroid-pocket-flip2 ;;

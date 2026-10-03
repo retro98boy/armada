@@ -1,0 +1,7 @@
+ARG BUILDER_IMAGE
+FROM ${BUILDER_IMAGE}
+
+RUN dnf5 -y install gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu \
+    && dnf5 clean all \
+    && aarch64-linux-gnu-gcc --version \
+    && aarch64-linux-gnu-ld --version

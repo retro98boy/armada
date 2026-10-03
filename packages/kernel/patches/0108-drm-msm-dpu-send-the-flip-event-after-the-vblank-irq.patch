@@ -15,11 +15,13 @@ only once the hardware has taken this kickoff's flush bits, which stay
 in the software mask until the next commit, and only after it has
 updated the vblank count and timestamp.
 
+Lenovo Y700 Gen4 retains the original flush-register-only wait.
+
 Source: https://github.com/portare-ch/portareos/blob/be06100b6d127692ed99401d23980fc04888ae01/projects/PortareOS/devices/SM8550/patches/linux/1098-drm-msm-dpu-send-the-flip-event-after-the-vblank-irq.patch
 ---
 --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
 +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-@@ -607,8 +607,18 @@
+@@ -607,8 +607,19 @@
  	if (!hw_ctl)
  		return 0;
  
@@ -35,7 +37,8 @@ Source: https://github.com/portare-ch/portareos/blob/be06100b6d127692ed99401d239
  	ret = wait_event_timeout(phys_enc->pending_kickoff_wq,
 -		(hw_ctl->ops.get_flush_register(hw_ctl) == 0),
 +		(hw_ctl->ops.get_flush_register(hw_ctl) == 0 &&
-+		 atomic_read(&phys_enc->pending_kickoff_cnt) == 0),
++		 (of_machine_is_compatible("lenovo,elden") ||
++		  atomic_read(&phys_enc->pending_kickoff_cnt) == 0)),
  		msecs_to_jiffies(50));
  	if (ret <= 0) {
  		DPU_ERROR("vblank timeout: %x\n", hw_ctl->ops.get_flush_register(hw_ctl));

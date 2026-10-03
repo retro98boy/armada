@@ -1,0 +1,16 @@
+ARG BIB_IMAGE=quay.io/centos-bootc/bootc-image-builder:latest
+ARG BUILDER_IMAGE
+FROM ${BUILDER_IMAGE} AS qemu
+
+# CentOS does not package this emulator; use the pinned Fedora toolchain.
+RUN dnf5 -y install qemu-user-static-aarch64 && dnf5 clean all
+
+FROM ${BIB_IMAGE}
+COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin/qemu-aarch64-static
+RUN /usr/bin/qemu-aarch64-static --version
+
+# Keep the nested Podman lock table local to the BIB container. Shared-memory
+# locks fail while BIB inspects an ARM64 bootc image on an x86_64 host.
+RUN mkdir -p /etc/containers/containers.conf.d && \
+    printf '[engine]\nlock_type = "file"\n' \
+        > /etc/containers/containers.conf.d/99-armada-y700-gen4.conf
